@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
-import AuthContext from '../context/AuthContext'
+import AuthContext from '../context/AuthContext';
+import axiosInstance from '../utils/axiosInstance';
 
 const HomePage = () => {
   const [notes, setNotes] = useState([])
@@ -10,21 +11,30 @@ const HomePage = () => {
   }, [])
 
   let getNotes = async () => {
-    const response = await fetch('http://127.0.0.1:8000/api/notes/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + String(authTokens.access)
-      }
-    })
-    const data = await response.json()
+    const response = await axiosInstance.get('/api/notes/')
 
+    // const response = await fetch('http://127.0.0.1:8000/api/notes/', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': 'Bearer ' + String(authTokens.access)
+    //   }
+    // })
+    
+    // Don't need this line below using axios 
+    // const data = await response.json()
+    
     if (response.status === 200) {
-      setNotes(data)
-      // logouts user if unauthorized
-    } else if (response.statusText === 'Unauthorized') {
-      logoutUser()
+      setNotes(response.data)
     }
+
+    // use line above and line below while using fetch
+    // if (response.status === 200) {
+    //   setNotes(data)
+    //   // logouts user if unauthorized
+    // } else if (response.statusText === 'Unauthorized') {
+    //   logoutUser()
+    // }
   } 
 
   return (
