@@ -58,29 +58,29 @@ export const AuthProvider = ({children}) => {
         navigate('/login')
     }
 
-    const updateToken = async () => {
-        console.log('Updated Token')
-        const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            //  if authToken not there '?' stops refresh token from refreshing if no access token yet
-            body: JSON.stringify({'refresh': authTokens?.refresh })
-        })
-        const data = await response.json()
+    // const updateToken = async () => {
+    //     console.log('Updated Token')
+    //     const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         //  if authToken not there '?' stops refresh token from refreshing if no access token yet
+    //         body: JSON.stringify({'refresh': authTokens?.refresh })
+    //     })
+    //     const data = await response.json()
 
-        if (response.status === 200) {
-            setAuthTokens(data)
-            setUser(jwt_decode(data.access))
-            localStorage.setItem('authTokens', JSON.stringify(data))
-        } else {
-            logoutUser()
-        }
-        if (loading) {
-            setLoading(false)
-        }
-    }
+    //     if (response.status === 200) {
+    //         setAuthTokens(data)
+    //         setUser(jwt_decode(data.access))
+    //         localStorage.setItem('authTokens', JSON.stringify(data))
+    //     } else {
+    //         logoutUser()
+    //     }
+    //     if (loading) {
+    //         setLoading(false)
+    //     }
+    // }
 
     const contextData = {
         // key: value pair
@@ -91,20 +91,27 @@ export const AuthProvider = ({children}) => {
     }
 
     useEffect(() => {
-        if (loading) {
-            updateToken()
+        if(authTokens) {
+            setUser(jwt_decode(authTokens.access))
         }
-
-        const fourMinutes = 1000 * 60 * 4
-        const interval = setInterval(() => {
-            if(authTokens) {
-                updateToken()
-            }
-        }, fourMinutes)
-        // line below will clear infinite loop
-        return () => clearInterval(interval)
+        setLoading(false)
     }, [authTokens, loading])
-    // authTokens, loading
+
+    // useEffect(() => {
+    //     if (loading) {
+    //         updateToken()
+    //     }
+
+    //     const fourMinutes = 1000 * 60 * 4
+    //     const interval = setInterval(() => {
+    //         if(authTokens) {
+    //             updateToken()
+    //         }
+    //     }, fourMinutes)
+    //     // line below will clear infinite loop
+    //     return () => clearInterval(interval)
+    // }, [authTokens, loading])
+    // // authTokens, loading
 
     return (
         // We want value to be available throughout application
