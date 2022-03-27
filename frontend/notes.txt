@@ -1,0 +1,3 @@
+When creating/writing cod and ou think you might need github, always start the github repo 
+
+In this situation, I created the repo and added folders from another project, the react folder frontend creates its own git init, so follow instructions of this website to fix submodel repos https://gist.github.com/claraj/e5563befe6c2fb108ad0efb6de47f265
