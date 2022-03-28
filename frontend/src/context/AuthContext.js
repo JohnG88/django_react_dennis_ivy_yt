@@ -86,6 +86,8 @@ export const AuthProvider = ({children}) => {
         // key: value pair
         user:user,
         authTokens: authTokens,
+        setAuthTokens: setAuthTokens,
+        setUser: setUser,
         loginUser:loginUser,
         logoutUser: logoutUser
     }

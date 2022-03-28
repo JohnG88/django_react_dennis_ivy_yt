@@ -1,17 +1,19 @@
 import React, {useState, useEffect, useContext} from 'react'
 import AuthContext from '../context/AuthContext';
-import axiosInstance from '../utils/axiosInstance';
+// import axiosInstance from '../utils/axiosInstance';
+import useAxios from '../utils/useAxios';
 
 const HomePage = () => {
   const [notes, setNotes] = useState([])
   const {authTokens, logoutUser} = useContext(AuthContext)
+  const api = useAxios()
 
   useEffect(() => {
     getNotes()
   }, [])
 
-  let getNotes = async () => {
-    const response = await axiosInstance.get('/api/notes/')
+  const getNotes = async () => {
+    const response = await api.get('/api/notes/')
 
     // const response = await fetch('http://127.0.0.1:8000/api/notes/', {
     //   method: 'GET',
